@@ -1,7 +1,7 @@
 #!/bin/bash
 st=210
 ed=219
-ipfile=machine.Linux.get$st$ed
+ipfile=machines.Linux.get$st$ed
 rm -rf $ipfile
 for ((a=$st; a <= $ed ; a++))
 do
@@ -10,7 +10,7 @@ do
    #sta=$(ping -c 1 "$server" 2>/dev/null)
    #sta=`ping -c 1 $server ; echo $?`
    #echo $server $sta > pingtest
-   ip=` getent hosts "$server" | awk '{print $1}'`
+   ip=`getent hosts "$server" | awk '{print $1}'`
    output=$(ping -c 1 "$server" 2>/dev/null)
    if [ $? -eq 0 ]; then
      echo "$server is up" >> pingtest ; 
