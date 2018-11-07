@@ -32,7 +32,8 @@ do
     if [ ${case} = ${ver} ]; then
     echo $f
     echo $cf
-    gdalwarp -cutline $cf -crop_to_cutline -dstalpha $f clip_$f
+    gdalwarp -cutline $cf -crop_to_cutline  $f clip_$f
+    #gdalwarp -cutline $cf -crop_to_cutline -dstalpha $f clip_$f
     fi
 
   done  
