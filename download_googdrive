@@ -1,5 +1,5 @@
-FILE_ID=1lwBTdX9AzPhRbeWtX3WGL5PR6Xz7CLXn
-FILE_NAME=Win10_1809Oct_Japanese_x64.iso
+FILE_ID=1r9ec_s0v-UTGTMRSyIvpM6k9VHhwO_iz
+FILE_NAME=winpe.iso
 curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
 CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"  
 curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
