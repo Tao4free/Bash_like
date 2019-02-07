@@ -1,0 +1,8 @@
+
+#dbus_enable=YES
+#pkg_scripts="dbus_daemon avahi_daemon"
+
+multicast_host=YES       # Some avahi shenanigans
+apmd_flags="-A"          # Laptop power saving
+xenodm_flags=""          # Starts xenodm graphical login
+pkg_scripts="messagebus" # Enables dbus/ConsoleKit stuff
