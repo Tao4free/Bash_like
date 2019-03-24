@@ -6,3 +6,9 @@ set softtabstop=4   " Sets the number of columns for a TAB.
 set expandtab       " Expand TABs to spaces.
 set autoindent
 
+syntax on
+set ruler
+
+colorscheme slate
+
+set backspace=indent,eol,start
