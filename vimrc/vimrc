@@ -1,3 +1,52 @@
+""""""""""""Vundle"""""""""""""""""""""""""""""""""""""""""""""
+" Vundle
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'scrooloose/nerdtree'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+"Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+"Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Avoid a name conflict with L9
+"Plugin 'user/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
+""""""""""""Space and Tab""""""""""""""""""""""""""""""""""""""
 " https://www.cs.oberlin.edu/~kuperman/help/vim/indenting.html
 
 set tabstop=4       " The width of a TAB is set to 4.
@@ -6,9 +55,62 @@ set softtabstop=4   " Sets the number of columns for a TAB.
 set expandtab       " Expand TABs to spaces.
 set autoindent
 
-syntax on
-set ruler
-
-colorscheme slate
-
 set backspace=indent,eol,start
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Syntax"""""""""""""""""""""""""""""""""""""""""""""
+syntax on
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Ruler""""""""""""""""""""""""""""""""""""""""""""""
+set ruler
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Color Scheme"""""""""""""""""""""""""""""""""""""""
+colorscheme slate
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""NERDTree and TagBar Setting""""""""""""""""""""""""
+let g:TypesFileIncludeLocals = 1
+let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
+"let g:tagbar_width = 20
+"let g:NERDTreeWinSize=20
+"let g:tagbar_left = 1
+
+"在左边占多宽
+let NERDTreeWinSize=28
+"当前目录的设定
+let NERDTreeChDirMode = 2
+"自动退出
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
+"打开vim时自动打开
+autocmd vimenter * NERDTree
+"<F2>作为toggle
+nmap <F2> :NERDTreeToggle<CR>
+
+
+"在这儿设定二者的分布
+let g:tagbar_vertical = 12
+"去除第一行的帮助信息
+let g:tagbar_compact = 1
+"当编辑代码时，在Tagbar自动追踪变量
+let g:tagbar_autoshowtag = 1
+"<F3>作为toggle
+nmap <F3> :TagbarToggle<CR>
+"打开vim时自动打开
+autocmd VimEnter * nested :TagbarOpen
+wincmd l
+"如果不加这句，打开vim的时候当前光标会在Nerdtree区域
+autocmd VimEnter * wincmd l
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""Mapping to switch panels"""""""""""""""""""""""""""
+nmap <silent> <C-Up> :wincmd k<CR>
+nmap <silent> <C-Down> :wincmd j<CR>
+nmap <silent> <C-Left> :wincmd h<CR>
+nmap <silent> <C-Right> :wincmd l<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
