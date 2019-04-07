@@ -81,7 +81,7 @@ let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
 "let g:tagbar_left = 1
 
 "在左边占多宽
-let NERDTreeWinSize=28
+let NERDTreeWinSize=25
 "当前目录的设定
 let NERDTreeChDirMode = 2
 "自动退出
