@@ -81,7 +81,7 @@ let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
 "let g:tagbar_left = 1
 
 "在左边占多宽
-let NERDTreeWinSize=28
+let NERDTreeWinSize=25
 "当前目录的设定
 let NERDTreeChDirMode = 2
 "自动退出
@@ -93,7 +93,7 @@ nmap <F2> :NERDTreeToggle<CR>
 
 
 "在这儿设定二者的分布
-let g:tagbar_vertical = 12
+let g:tagbar_vertical = 15
 "去除第一行的帮助信息
 let g:tagbar_compact = 1
 "当编辑代码时，在Tagbar自动追踪变量
