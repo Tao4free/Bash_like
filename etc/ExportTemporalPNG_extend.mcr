@@ -22,7 +22,7 @@ $!ANIMATETIME
   SKIP = 1
   CREATEMOVIEFILE = NO
 
-$!EXPORTSETUP EXPORTFNAME = './img/006b1t_Sw/file_|LOOP%03d|.png'
+$!EXPORTSETUP EXPORTFNAME = './img/file_|LOOP%03d|.png'
 $!EXPORT 
   EXPORTREGION = CURRENTFRAME
 #------------------------------------------------------------------------
