@@ -6,7 +6,10 @@ $!EXPORTSETUP USESUPERSAMPLEANTIALIASING = YES
 $!EXPORTSETUP SUPERSAMPLEFACTOR = 2
 $!EXPORTSETUP CONVERTTO256COLORS = YES
 #-----------------------------------------------------------------------
+# Take the output png name from environment variable
 $!VarSet |NAME| = '|$PNGNAME|'
+
+# Get number of step and current time
 $!ADDONCOMMAND ADDONID='Extend Time MCR' 
   COMMAND='QUERY.NUMTIMESTEPS NUMTIMESTEPS'
 $!LOOP |NUMTIMESTEPS|
