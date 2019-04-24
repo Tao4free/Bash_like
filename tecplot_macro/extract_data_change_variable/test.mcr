@@ -1,0 +1,30 @@
+#!MC 1400
+# Created by Tecplot Focus build 14.0.1.26249
+$!VarSet |MFBD| = '\\get0\get\GetPJ\SINKAI_Hatiouji_SP2018\RUN_PLAN\tcp\test'
+$!DUPLICATEZONE 
+  SOURCEZONE = 1
+  DESTINATIONZONE = 2
+  IRANGE
+    {
+    MIN = 48
+    MAX = 49
+    }
+  JRANGE
+    {
+    MAX = 161
+    }
+  KRANGE
+    {
+    MAX = 31
+    }
+$!WRITEDATASET  "|MFBD|\test.plt"
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  INCLUDECUSTOMLABELS = NO
+  ASSOCIATELAYOUTWITHDATAFILE = NO
+  ZONELIST =  [2]
+  BINARY = YES
+  USEPOINTFORMAT = NO
+  PRECISION = 9
+  TECPLOTVERSIONTOWRITE = TECPLOTCURRENT
+$!RemoveVar |MFBD|
