@@ -1,120 +1,193 @@
 #!MC 1400
 
-#$!VARSET |nvars| = |NUMVARS|
-#$!PAUSE "Current data contains |nvars| variables!"
-#$!VARSET |nzones| = |NUMZONES|
-#$!PAUSE "Current data contains |nzones| zones!"
-#$!VARSET |polttype| = |PLOTTYPE|
-#$!PAUSE "Plottype of this frame is |plottype|!"
+# Check wheather the variable will be used exist or not
+$!VARSET |DISNUM| = 0 
+$!LOOP |NUMVARS|
+$!ADDONCOMMAND ADDONID='extendmcr'
+  COMMAND='QUERY.VARNAMEBYNUM |LOOP| name' 
+$!IF "|name|" == "DIS"
+#$!PAUSE "The no.|LOOP| variable name is |name| !"
+# Set the dis number of variables
+$!VARSET |DISNUM| = |LOOP| 
+#$!PAUSE "current number of this layout: |DISNUM|"
+$!ENDIF
+$!ENDLOOP
 
-#$!PAUSE "|MAXI|, |MAXJ|, |MAXK|"
-
-#$!LOOP |nvars|
-#$!VARSET |varname| = "|VARNAME|"
-#$!PAUSE "|LOOP| variable is |varname|!"
-#$!ENDLOOP
-
-# https://kb.tecplot.com/2009/09/24/add-streamtraces-by-ijk/
-## These variables define the IJK starting position:
-#$!VARSET |Istart| = 3
-#$!VARSET |Jstart| = 4
-#$!VARSET |Kstart| = 3
-## Since $!$GETFIELDVALUE only accepts 1D arrays for
-## the index this function converts IJK into a 1D index value:
-#$!VARSET |1DArrayIndex| = ( |Istart| + |MAXI|*(|Jstart|-1) + |MAXI|*|MAXJ|*(|Kstart|-1) )
-## These 3 $!GETFIELDVALUES assume that variables 1 
-##2 and 3 are your X Y and Z axis variables:
-#$!GETFIELDVALUE |Xstart| VAR = 1 ZONE = 1 INDEX = |1DArrayIndex|
-#$!GETFIELDVALUE |Ystart| VAR = 2 ZONE = 1 INDEX = |1DArrayIndex|
-#$!GETFIELDVALUE |Zstart| VAR = 3 ZONE = 1 INDEX = |1DArrayIndex|
-#$!GETFIELDVALUE |Dstart| VAR = 4 ZONE = 1 INDEX = |1DArrayIndex|
-#$!PAUSE "|Xstart|, |Ystart|, |Zstart|, |Dstart|"
-
-$!DUPLICATEZONE
-  SOURCEZONE = 1
-  DESTINATIONZONE = 2
-  IRANGE
-    {
-    MIN = 48
-    MAX = 49
-    }
+# If 'DIS' does not exit, increase the variable index
+$!IF |DISNUM| == 0
+# Set the dis number of variables
+$!VARSET |DISNUM| = (|NUMVARS| + 1) 
+$!ENDIF
 
 
-$!WRITEDATASET  "try_01.plt"
-  INCLUDETEXT = NO
-  INCLUDEGEOM = NO
-  INCLUDECUSTOMLABELS = NO
-  ASSOCIATELAYOUTWITHDATAFILE = NO
-  ZONELIST =  [2]
-  BINARY = YES
-  USEPOINTFORMAT = NO
-  PRECISION = 9
-  TECPLOTVERSIONTOWRITE = TECPLOTCURRENT
+# Get parameter from gui
+$!PROMPTFORTEXTSTRING |DIREC|
+     INSTRUCTIONS = "Enter the direction you want to Show ( I : 1, J : 2) : "
 
-#$!DUPLICATEZONE
-#  SOURCEZONE = 1
-#  DESTINATIONZONE = 2
-#  IRANGE
-#    {
-#    MIN = 2
-#    MAX = 3
-#    }
-#  JRANGE
-#    {
-#    MAX = 4
-#    }
-#  KRANGE
-#    {
-#    MAX = 3
-#    }
+$!IF |DIREC| == 1
+$!PAUSE "You will edit the I direction"
+$!PROMPTFORTEXTSTRING |ITAR|
+     INSTRUCTIONS = "Enter the target I (1-|MAXI|): "
+$!ELSEIF |DIREC| == 2
+$!PAUSE "You will edit the J direction"
+$!PROMPTFORTEXTSTRING |JTAR|
+     INSTRUCTIONS = "Enter the target J (1-|MAXJ|): "
+$!ELSE
+$!PAUSE "Please input number 1 or 2"
+$!ENDIF
 
-#$!ACTIVEFIELDMAPS -= [1]
-#$!ACTIVEFIELDMAPS += [2]
 
-$!VARSET |DISNUM| = (|NUMVARS| + 1)
-#$!PAUSE "DIS num = |DISNUM|"
+# Check value I=2,J=3,K=2
+$!VARSET |IndexX|  = ( 2 + |MAXI|*(3-1) + |MAXI|*|MAXJ|*(2-1) )
+$!GetFieldValue |ValueX| 
+  Zone    = 1 
+  Var     = 1 
+  Index   = |IndexX|
+$!PAUSE "I = 2, J = 3, K =2, X = |ValueX|"
 
+# Make the variable to calculate distance between two nodes
+$!IF |DIREC| == 1
 $!ALTERDATA 
-   EQUATION  "{DIS} = sqrt((X(i,j,k)-X(i,1,k))**2 + (Y(i,j,k)-Y(i,1,k))**2)"
-
+   EQUATION  "{DIS} = sqrt((X(i,j,k)-X(i,j-1,k))**2 + (Y(i,j,k)-Y(i,j-1,k))**2)"
+$!ELSEIF |DIREC| == 2
+$!ALTERDATA 
+   EQUATION  "{DIS} = sqrt((X(i,j,k)-X(i-1,j,k))**2 + (Y(i,j,k)-Y(i-1,j,k))**2)"
+$!ENDIF
 
 #$!PAUSE "MAXI = |MAXI|, MAXJ = |MAXJ|, MAXK =|MAXK|"
 
-$!VARSET |II| = 2
-$!LOOP |MAXK|
+$!VARSET |KNUM| = |MAXK|
+$!VARSET |JNUM| = |MAXJ|
+$!VARSET |INUM| = |MAXI|
+$!IF |DIREC| == 1
+$!VARSET |INUM| = 1
+$!ELSEIF |DIREC| == 2
+$!VARSET |JNUM| = 1
+$!ENDIF
+
+$!LOOP |KNUM|
 $!VARSET |K| = |LOOP|
-$!LOOP |MAXJ|
+$!LOOP |JNUM|
+$!IF |DIREC| == 2
+$!VARSET |J| = |JTAR|
+$!ELSE
 $!VARSET |J| = |LOOP|
-$!LOOP |II|
+$!ENDIF
+$!LOOP |INUM|
+$!IF |DIREC| == 1
+$!VARSET |I| = |ITAR|
+$!ELSE
 $!VARSET |I| = |LOOP|
+$!ENDIF
 
-$!VARSET |Index|  = ( |I| + |II|*(|J|-1) + |II|*|MAXJ|*(|K|-1) )
-$!VARSET |Index0| = ( |I| + |II|*|MAXJ|*(|K|-1) )
-$!GetFieldValue |ValueI| 
-  Zone    = 2 
-  Var   = 1 
-  Index   = |Index0|
-$!GetFieldValue |Value| 
-  Zone    = 2 
-  Var   = |DISNUM| 
-  Index   = |Index|
-#$!PAUSE "I = |I|, J = |J|, K =|K|, X0 = |ValueI|, DIS = |Value|"
-$!SETFIELDVALUE 
-  ZONE = 2
-  VAR = 1
-  INDEX = |Index|
-  FIELDVALUE = |ValueI|
-$!SETFIELDVALUE 
-  ZONE = 2
-  VAR = 2
-  INDEX = |Index|
-  FIELDVALUE = |Value| 
+# Reline the I direction 
+$!IF |DIREC| ==1
+  $!VARSET |Index|  = ( |I| + |MAXI|*(|J|-1) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!VARSET |Index0| = ( |I| + |MAXI|*|MAXJ|*(|K|-1) )
+  $!IF |J| == 1 
+    $!VARSET |Index1| = ( |I| + |MAXI|*(|J|-1) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!ELSE
+    $!VARSET |Index1| = ( |I| + |MAXI|*(|J|-2) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!ENDIF
+
+  # Get the first x coordinate of each J direction 
+  $!GetFieldValue |Value0| 
+    Zone    = 1 
+    Var     = 1 
+    Index   = |Index0|
+
+  # Get the y coordinate of I(J-1)K 
+  $!GetFieldValue |Value1| 
+    Zone    = 1 
+    Var     = 2 
+    Index   = |Index1|
+
+  # Get the DIS of IJK 
+  $!GetFieldValue |Value| 
+    Zone    = 1 
+    Var     = |DISNUM| 
+    Index   = |Index|
+
+  #$!PAUSE "I = |I|, J = |J|, K =|K|, X0 = |Value0|, DIS = |Value|"
+
+  $!VARSET |D| = ( |Value| + |Value1| )
+  #$!IF |J| == 2 
+  #  $!PAUSE "I = |I|, J = |J|, K =|K|, X0 = |Value0|, D = |D|"
+  #$!ENDIF
+
+  # Set x as the first x coordinate of each J direction 
+  $!SETFIELDVALUE 
+    ZONE = 1
+    VAR = 1
+    INDEX = |Index|
+    FIELDVALUE = |Value0|
+
+  # Set the y coordinate of IJK 
+  $!SETFIELDVALUE 
+    ZONE = 1
+    VAR = 2
+    INDEX = |Index|
+    FIELDVALUE = |D| 
+$!ENDIF
+
+# Reline the J direction 
+$!IF |DIREC| ==2
+  $!VARSET |Index|  = ( |I| + |MAXI|*(|J|-1) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!VARSET |Index0| = (  1  + |MAXI|*(|J|-1) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!IF |I| == 1 
+    $!VARSET |Index1| = ( |I|     + |MAXI|*(|J|-1) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!ELSE
+    $!VARSET |Index1| = ( |I| - 1 + |MAXI|*(|J|-1) + |MAXI|*|MAXJ|*(|K|-1) )
+  $!ENDIF
+
+  # Get the first y coordinate of each I direction 
+  $!GetFieldValue |Value0| 
+    Zone    = 1 
+    Var     = 2 
+    Index   = |Index0|
+
+  # Get the x coordinate of (I-1)JK 
+  $!GetFieldValue |Value1| 
+    Zone    = 1 
+    Var     = 1 
+    Index   = |Index1|
+
+  # Get the DIS of IJK 
+  $!GetFieldValue |Value| 
+    Zone    = 1 
+    Var     = |DISNUM| 
+    Index   = |Index|
+
+  #$!PAUSE "I = |I|, J = |J|, K =|K|, X0 = |Value0|, DIS = |Value|"
+
+  # Get the current node coordinate using the distance between two nodes
+  $!VARSET |D| = ( |Value| + |Value1| )
+
+  # Set y as the first y coordinate of each I direction 
+  $!SETFIELDVALUE 
+    ZONE = 1
+    VAR = 2
+    INDEX = |Index|
+    FIELDVALUE = |Value0|
+
+  # Set the x coordinate of IJK 
+  $!SETFIELDVALUE 
+    ZONE = 1
+    VAR = 1
+    INDEX = |Index|
+    FIELDVALUE = |D| 
+$!ENDIF
 
 $!ENDLOOP
 $!ENDLOOP
 $!ENDLOOP
 
 
-
-
+# Check value I=2,J=3,K=2
+$!VARSET |IndexX|  = ( 2 + |MAXI|*(3-1) + |MAXI|*|MAXJ|*(2-1) )
+$!GetFieldValue |ValueX| 
+  Zone    = 1 
+  Var     = 1 
+  Index   = |IndexX|
+$!PAUSE "I = 2, J = 3, K =2, X = |ValueX|"
 
