@@ -113,3 +113,5 @@ nmap <silent> <C-Down> :wincmd j<CR>
 nmap <silent> <C-Left> :wincmd h<CR>
 nmap <silent> <C-Right> :wincmd l<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set rnu
