@@ -114,4 +114,9 @@ nmap <silent> <C-Left> :wincmd h<CR>
 nmap <silent> <C-Right> :wincmd l<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+
 set rnu
+
+
+#https://sanctum.geek.nz/arabesque/vim-filename-completion/
+inoremap <Tab> <C-X><C-F>
