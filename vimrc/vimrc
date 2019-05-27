@@ -13,6 +13,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-surround'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -81,7 +82,7 @@ let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
 "let g:tagbar_left = 1
 
 "在左边占多宽
-let NERDTreeWinSize=25
+let NERDTreeWinSize=28
 "当前目录的设定
 let NERDTreeChDirMode = 2
 "自动退出
@@ -93,7 +94,7 @@ nmap <F2> :NERDTreeToggle<CR>
 
 
 "在这儿设定二者的分布
-let g:tagbar_vertical = 15
+let g:tagbar_vertical = 12
 "去除第一行的帮助信息
 let g:tagbar_compact = 1
 "当编辑代码时，在Tagbar自动追踪变量
@@ -114,9 +115,16 @@ nmap <silent> <C-Left> :wincmd h<CR>
 nmap <silent> <C-Right> :wincmd l<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 set rnu
-
-
-#https://sanctum.geek.nz/arabesque/vim-filename-completion/
 inoremap <Tab> <C-X><C-F>
+
+" https://maku77.github.io/vim/advanced/folding.html
+" https://vim.fandom.com/wiki/Folding
+"set foldmethod=syntax
+"inoremap <F4> <C-O>za
+"nnoremap <F4> za
+"onoremap <F4> <C-C>za
+"vnoremap <F4> zf
+
+"nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+"vnoremap <Space> zf
