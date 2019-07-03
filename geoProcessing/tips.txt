@@ -1,0 +1,297 @@
+'\n\n\n' || "FieldName" || '                    '
+
+make clean label
+
+
+https://gis.stackexchange.com/questions/207307/batch-export-from-multiple-qgs-projects-to-image-or-pdf
+
+
+############################
+gdal-cheat-sheet
+############################
+https://github.com/dwtkns/gdal-cheat-sheet
+
+############################
+convert tabs to shps
+############################
+for /R %f in (*.tab) do ogr2ogr -f "ESRI Shapefile" "%~dpnf.shp" "%f"
+
+link:https://gis.stackexchange.com/questions/25366/using-ogr2ogr-to-convert-all-shapefiles-in-directory
+
+for /R %f in (*.shp) do ogr2ogr -f "MapInfo File" "%~dpnf.TAB" "%f"
+
+for /R %f in (*.shp) do ogr2ogr -f "MapInfo File" -dsco FORMAT=MIF "%~dpnf.MIF" "%f"
+
+for /R %f in (*.tab) do ogr2ogr -f "MapInfo File" -dsco FORMAT=MIF "%~dpnf.MIF" "%f"
+
+for /R %f in (*.mif) do ogr2ogr -f "MapInfo File" "%~dpnf.TAB" "%f"
+
+for /R %f in (*.mif) do ogr2ogr -f "ESRI Shapefile" "%~dpnf.shp" "%f"
+
+for /R %f in (*.mif) do ogr2ogr -f "ESRI Shapefile" -a_srs EPSG:2452 "%~dpnf.shp" "%f"
+for /R %f in (*.mif) do ogr2ogr -f "ESRI Shapefile" -a_srs EPSG:2451 "%~dpnf.shp" "%f"
+
+for /R %f in (*.shp) do ogr2ogr -f "MapInfo File" -a_srs EPSG:2452 "%~dpnf.TAB" "%f"
+
+
+for /R %f in (*.tab) do ogr2ogr -f "ESRI Shapefile" -a_srs EPSG:2452 "%~dpnf.shp" "%f"
+
+
+
+for i in *.shp; do ogr2ogr -f "MapInfo File" -dsco FORMAT=MIF  "$i"  "${i%.*}".MIF; done
+for i in *.mif; do ogr2ogr -f "ESRI Shapefile"  "$i"  "${i%.*}".shp; done
+
+
+
+
+
+############################
+clip
+############################
+example:
+ogr2ogr.exe -clipsrc ../DKI_pg.shp  //getgis5/share/FY2016/00_Nissuicon_Jakarta/B_Processed/Spatial/B06_Hydrology/B063_AssignRiverLGR/SHP/AssignRiverRev_WGS84_mod.shp AssignRiverRev_WGS84_mod
+
+for /R %f in (*.shp) do ogr2ogr -clipsrc ../DKI_pg.shp  "%~dpf1Trim_%~nxf" "%f"
+
+for /R %f in (*.shp) do ogr2ogr -clipsrc ../DKI_pg.shp  "%~dpfTrim_%~nxf" "%f"
+
+link:https://stackoverflow.com/questions/9252980/how-to-split-the-filename-from-a-full-path-in-batch
+
+gdalwarp -dstnodata -9999 -cutline ../DKI.shp Subs_020b3t-scn02_2050_reg.asc Clip_Subs_020b3t-scn02_2050_reg.asc
+gdalwarp -dstnodata -9999 -cutline ../DKI.shp Subs_020b3t-scn11_2050_reg.asc Clip_Subs_020b3t-scn11_2050_reg.asc
+
+--config GDALWARP_IGNORE_BAD_CUTLINE YES
+
+for /R %f in (*.tif) do gdalwarp -dstnodata -9999 -cutline ../01.shp "%f" "%~dpfGEO01_%~nxf" 
+for /R %f in (*.tif) do gdalwarp --config GDALWARP_IGNORE_BAD_CUTLINE YES -dstnodata -9999 -cutline ../02.shp "%f" "%~dpfGEO02_%~nxf" 
+for /R %f in (DEM*.tif) do gdalwarp --config GDALWARP_IGNORE_BAD_CUTLINE YES -dstnodata -9999 -cutline ../03.shp "%f" "%~dpfGEO03_%~nxf" 
+
+for /R %f in (*.shp) do ogr2ogr -clipsrc ../xxx.shp  "%~dpf1Trim_%~nxf" "%f"
+for /R %f in (*.shp) do ogr2ogr -clipsrc ../yyy.shp  "%~dpf1Trim_%~nxf" "%f"
+for /R %f in (*.shp) do ogr2ogr -clipsrc ../zzz.shp  "%~dpf1Trim_%~nxf" "%f"
+
+
+gdalwarp -cutline INPUT.shp -crop_to_cutline -dstalpha INPUT.tif OUTPUT.tif
+
+
+
+############################
+delete
+############################
+for /R %f in (*2020*.shp) do del "%f"
+
+
+
+############################
+Extract centroid
+############################
+example:
+ogr2ogr centroid.shp fields.shp -dialect sqlite -sql "SELECT ST_Centroid(geometry), id, name from fields"
+
+link:https://gist.github.com/sharkinsspatial/1b0c4bf03954a72af88f
+
+#ogr2ogr -sql "SELECT ST_Centroid(geometry), * FROM countries" -dialect sqlite countries_centroid.shp countries.shp
+
+Test
+ogr2ogr centroid.shp subs.shp -dialect sqlite -sql "SELECT ST_Centroid(geometry), * from subs"
+ogr2ogr centroid.shp Subs_020b3t.scn11_2050_reg.shp -dialect sqlite -sql "SELECT ST_Centroid(geometry), * from Subs_020b3t.scn11_2050_reg"
+
+
+
+############################
+Vectorize Output Integer
+############################
+gdal_polygonize.bat jakarta_clipped_ALOS_32748.tif -f "ESRI Shapefile" 
+
+gdal_polygonize.bat 01.tif -f "ESRI Shapefile" 01.shp
+
+for /R %f in (*.tif) do gdal_polygonize.bat "%f" -f "ESRI Shapefile" "%~dpnf.shp"
+
+
+
+############################
+Calculate area
+############################
+ogr2ogr output.shp input.shp -sql "SELECT *, OGR_GEOM_AREA AS area FROM input"
+
+link:https://gis.stackexchange.com/questions/83869/is-there-any-way-to-add-an-area-column-to-new-shapefile-created-from-raster-with
+
+for  %f in (*.shp) do ogr2ogr "Addarea_%~nxf" "%f" -sql "SELECT *, OGR_GEOM_AREA AS area FROM %f"
+
+ogr2ogr area_02.shp a02.shp -sql "SELECT *, OGR_GEOM_AREA AS area FROM a02"
+ogr2ogr area_11.shp a11.shp -sql "SELECT *, OGR_GEOM_AREA AS area FROM a11"
+
+
+
+############################
+Extract raster band
+###########################
+gdal_translate "path/to/raster.tif" -b 4 "path/to/result.tif"
+
+link: https://gis.stackexchange.com/questions/237149/multiband-to-single-band-raster
+gdal_translate "zzz.tif" -b 4 "zzz4.tif"
+
+
+
+
+
+
+
+############################
+Create points along line
+###########################
+ogr2ogr.exe "[一時ファイル]" //getgis6/share/FY2017/00_PCKK_Mogamigawa/A_Collected/Spatial/A02_Topography/A023_River/Kokudokasen_L1_jgdX.shp Kokudokasen_L1_jgdX -dialect sqlite -sql "SELECT ST_Line_Interpolate_Point( geometry , 0.5 ),* FROM 'Kokudokasen_L1_jgdX' "
+
+ogr2ogr.exe targetfilePath origionalFile -dialect sqlite -sql "SELECT ST_Line_Interpolate_Point( geometry , 0.5 ),* FROM 'name' "
+
+
+for /R %f in (*.shp) do ogr2ogr.exe "%~dpfL2P_%~nxf"  "%f"  -dialect sqlite -sql "SELECT ST_Line_Interpolate_Point( geometry , 10 ),* %f"
+
+
+
+
+
+############################
+Create perpendicular line from a point and line
+###########################
+https://gis.stackexchange.com/questions/232703/automated-creation-of-perpendicular-lines-between-a-point-layer-and-a-line-layer
+
+
+############################
+Raster calculation in the part to polygon
+###########################
+https://gis.stackexchange.com/questions/84563/how-to-change-raster-cell-values-within-a-polygon-using-qgis-gui
+
+
+
+
+############################
+Change projection XXXXXXXXXXXXXXXXXXXXXXXXXX
+###########################
+ogr2ogr -f "ESRI Shapefile" original.shp wgs84.shp -s_srs EPSG:27700 -t_srs EPSG:4326
+ogr2ogr -f "MapInfo File" original.tab wgs84.shp -s_srs EPSG:27700 -t_srs EPSG:4326
+
+for /R %f in (*.shp) do ogr2ogr -f "ESRI Shapefile"   "%f" "%~dpnf_jgdx.shp" -s_srs EPSG:3100 -t_srs EPSG:2452
+
+gdalwarp -s_srs EPSG:30170 -t_srs EPSG:2452 in.tif out.tif
+
+for i in *.tif; do gdalwarp -s_srs EPSG:30170 -t_srs EPSG:2452 -r near -ot Float32 -of GTiff  "$i"  new/"${i%.*}".tif; done
+
+
+
+############################
+Convert huge XYZ CSV to GeoTIFF and Reverse
+###########################
+https://gis.stackexchange.com/questions/227246/convert-huge-xyz-csv-to-geotiff
+gdal_translate test.xyz test.tif
+
+for /R %f in (*.txt) do gdal_translate -a_srs EPSG:2444 "%f" "%~dpnf.tif" 
+
+
+https://gis.stackexchange.com/questions/59323/convert-geotiff-to-simple-xyz-elevation-file
+
+You should be able to do this using the gdal_translate command line tool.
+
+http://www.gdal.org/gdal_translate.html
+
+To convert to Arc/Info ASCII Grid:
+gdal_translate -of AAIGrid elevation.tif elevation.asc
+
+To convert to ASCII Gridded XYZ:
+gdal_translate -of XYZ elevation.tif elevation.xyz
+Binary executables of the GDAL tools are available here: http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries
+
+
+for /R %f in (*.tif) do gdal_translate -of XYZ "%f"  "%~dpnf.xyz" 
+
+for /R %f in (*.tif) do gdal_translate -of AAIGrid "%f"  "%~dpnf.asc" 
+
+for i in *.tif; do gdal_translate -of XYZ "$i"  "${i%.*}".xyz; done
+
+for i in *.tif; do gdal_translate -of AAIGrid "$i"  "${i%.*}".asc; done
+
+
+############################
+Merge raster
+###########################
+gdalwarp input1.tif input2.tif merged.tif
+
+
+
+############################
+Seting 0 values in GeoTIFF to nodata using GDAL
+###########################
+https://gis.stackexchange.com/questions/41718/seting-0-values-in-geotiff-to-nodata-using-gdal
+
+gdal_translate -of GTiff -a_nodata 0 input.tif output.tif
+
+
+
+############################
+Calculater raster slope
+###########################
+gdaldem slope DEMBefore_merge.tif DEMBefore_merge_slope.tif
+
+
+
+
+############################
+Change kml to shp
+###########################
+https://gis.stackexchange.com/questions/98/converting-between-kml-and-shapefile-shp-format
+
+ogr2ogr -f 'ESRI Shapefile' output.shp input.kml
+
+ogr2ogr -f KML output.kml input.shp
+
+
+
+
+############################
+Raster and Ascii
+###########################
+gdal_translate -of GTiff lu_krs_attr.tif test_grid.asc
+convert the lu_krs_attr.tif to another tif file, even with asc. in the resulting filename
+
+gdal_translate -of AAIGrid lu_krs_attr.tif test_grid.asc 
+convert the lu_krs_attr.tif to an ASCII grid
+
+gdal_translate -of GTiff testgrid.asc test_grid.tif
+reverse
+
+And you have the command to use in QGIS
+
+for /R %f in (*.tif) do gdal_translate -of AAIGrid "%f"  "%~dpnf.asc"  
+
+
+
+
+############################
+tab_to_dxf
+###########################
+source link:
+https://nathanw.net/2011/05/05/3d-dxf-using-ogr/
+
+synax
+ogr2ogr -f "DXF" {outFile} {inFile} -zfield {ColumnWithZValue}
+
+example:
+ogr2ogr -f "DXF" test.dxf 05_UV_B_cont_JGDX_171220.TAB -zfield elev
+
+for /R %f in (*.shp) do ogr2ogr -f "DXF" "%~dpnf.dxf" "%f"   
+
+usage environment:
+OSGeo4W Shell
+
+
+
+ogr2ogr -f "ESRI Shapefile" test.shp test.dxf
+
+
+ogr2ogr test.shp test.dxf -sql "select * from entities where OGR_GEOMETRY =　'LINESTRING'"
+
+
+ogrinfo Yoshida01.dxf -sql "select DISTINCT OGR_GEOMETRY from entities"
+ogr2ogr point.shp Yoshida01.dxf -sql "select * from entities where OGR_GEOMETRY = 'POINT'"
+ogr2ogr line.shp Yoshida01.dxf -sql "select * from entities where OGR_GEOMETRY =　'LINESTRING'"
+ogr2ogr polygon.shp Yoshida01.dxf -sql "select * from entities where OGR_GEOMETRY = 'POLYGON'"
