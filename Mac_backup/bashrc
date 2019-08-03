@@ -1,4 +1,5 @@
-alias ls='ls -FHhG '
+#alias ls='ls -FHhG '
+alias ls='ls -FG '
 alias ..='cd ..'
 alias ...='cd ...'
 alias mkdir='mkdir -p'

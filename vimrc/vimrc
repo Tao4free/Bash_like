@@ -116,7 +116,7 @@ nmap <silent> <C-Right> :wincmd l<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set rnu
-inoremap <Tab> <C-X><C-F>
+"inoremap <Tab> <C-X><C-F>
 
 " https://maku77.github.io/vim/advanced/folding.html
 " https://vim.fandom.com/wiki/Folding

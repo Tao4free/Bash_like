@@ -120,7 +120,8 @@ nmap <silent> <C-Right> :wincmd l<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set rnu
-inoremap <Tab> <C-X><C-F>
+"inoremap <Tab> <C-X><C-F>
+inoremap <Tab> <C-X><C-N>
 
 " https://maku77.github.io/vim/advanced/folding.html
 " https://vim.fandom.com/wiki/Folding
@@ -132,3 +133,7 @@ inoremap <Tab> <C-X><C-F>
 
 "nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 "vnoremap <Space> zf
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+set hlsearch
