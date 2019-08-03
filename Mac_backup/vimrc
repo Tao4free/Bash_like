@@ -135,5 +135,10 @@ inoremap <Tab> <C-X><C-N>
 "vnoremap <Space> zf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 set hlsearch
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+source ~/.vim/vcomments.vim
+map <C-a> :call Comment()<CR>
+map <C-b> :call Uncomment()<CR>
