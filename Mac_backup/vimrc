@@ -167,5 +167,6 @@ let g:go_fmt_command = "goimports"
 " disable fmt on save
 let g:go_fmt_autosave = 1
 " https://thoughtbot.com/blog/writing-go-in-vim
-nmap <C-R> :GoRun %<CR> " % means current file
+" % means current file
+nmap <C-R> :GoRun %<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
