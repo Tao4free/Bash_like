@@ -14,6 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
+Plugin 'fatih/vim-go'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -119,9 +120,11 @@ nmap <silent> <C-Left> :wincmd h<CR>
 nmap <silent> <C-Right> :wincmd l<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""Set relative number and Tab""""""""""""""""""""""""
 set rnu
 "inoremap <Tab> <C-X><C-F>
 inoremap <Tab> <C-X><C-N>
+inoremap <S-Tab> <C-V><Tab>
 
 " https://maku77.github.io/vim/advanced/folding.html
 " https://vim.fandom.com/wiki/Folding
@@ -135,10 +138,34 @@ inoremap <Tab> <C-X><C-N>
 "vnoremap <Space> zf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+""""""""""""Higjlight search"""""""""""""""""""""""""""""""""""
 set hlsearch
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
+""""""""""""For comment""""""""""""""""""""""""""""""""""""""""
 source ~/.vim/vcomments.vim
 map <C-a> :call Comment()<CR>
 map <C-b> :call Uncomment()<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""For better diff color""""""""""""""""""""""""""""""
+if &diff
+    syntax off
+    colorscheme apprentice
+endif
+" https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff/2019438
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set mouse=a
+
+
+""""""""""""For go setting"""""""""""""""""""""""""""""""""""""
+let g:go_version_warning = 0
+" format with goimports instead of gofmt
+let g:go_fmt_command = "goimports"
+" disable fmt on save
+let g:go_fmt_autosave = 1
+" https://thoughtbot.com/blog/writing-go-in-vim
+nmap <C-R> :GoRun<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
