@@ -124,7 +124,7 @@ nmap <silent> <C-Right> :wincmd l<CR>
 set rnu
 "inoremap <Tab> <C-X><C-F>
 inoremap <Tab> <C-X><C-N>
-inoremap <S-Tab> <C-V><Tab>
+" inoremap <C-Tab> <C-V><Tab>
 
 " https://maku77.github.io/vim/advanced/folding.html
 " https://vim.fandom.com/wiki/Folding
