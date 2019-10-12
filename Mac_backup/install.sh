@@ -22,12 +22,12 @@ case "$OSTYPE" in
   solaris*) echo "Solaris" ;;
   *)        echo "unknown: $OSTYPE" ;;
 esac
-brew install ctags-exuberant
 
 # Copy the settings to files
 cplist="bash_profile bashrc vimrc"
 for i in $cplist; do 
     # check whether thre any comm line contents exists in the configure file
+    [ ! -f ~/.$i ] && touch ~/.$i
     com=`comm -12 $i ~/.$i`
     # -z is to check wether a variable is none/null or not
     if [ -z "$com" ]; then
