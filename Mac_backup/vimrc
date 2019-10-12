@@ -11,6 +11,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'altercation/vim-colors-solarized'  " https://vimawesome.com/plugin/vim-colors-solarized-ours
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
@@ -79,9 +80,13 @@ colorscheme solarized
 
 """"""""""""NERDTree and TagBar Setting""""""""""""""""""""""""
 "brew install ctags-exuberant
-let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-let g:TypesFileIncludeLocals = 1
-let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
+
+"default disable
+"let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+"let g:TypesFileIncludeLocals = 1
+"let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
+
+"default disable
 "let g:tagbar_width = 20
 "let g:NERDTreeWinSize=20
 "let g:tagbar_left = 1
@@ -124,6 +129,7 @@ nmap <silent> <C-Right> :wincmd l<CR>
 set rnu
 "inoremap <Tab> <C-X><C-F>
 inoremap <Tab> <C-X><C-N>
+" under insert-mode type <C-V><Tab> when you need to input the real tab
 " inoremap <C-Tab> <C-V><Tab>
 
 " https://maku77.github.io/vim/advanced/folding.html
@@ -157,7 +163,7 @@ endif
 " https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff/2019438
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set mouse=a
+set mouse-=a
 
 
 """"""""""""For go setting"""""""""""""""""""""""""""""""""""""
