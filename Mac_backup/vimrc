@@ -174,5 +174,5 @@ let g:go_fmt_command = "goimports"
 let g:go_fmt_autosave = 1
 " https://thoughtbot.com/blog/writing-go-in-vim
 " % means current file
-nmap <C-R> :GoRun %<CR>
+nmap <C-G> :GoRun %<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
