@@ -1,0 +1,107 @@
+
+
+""""""""""""Space and Tab""""""""""""""""""""""""""""""""""""""
+" https://www.cs.oberlin.edu/~kuperman/help/vim/indenting.html
+
+set tabstop=4       " The width of a TAB is set to 4.
+set shiftwidth=4    " Indents will have a width of 4.
+set softtabstop=4   " Sets the number of columns for a TAB.
+set expandtab       " Expand TABs to spaces.
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Syntax"""""""""""""""""""""""""""""""""""""""""""""
+set autoindent
+syntax on
+set backspace=indent,eol,start
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Ruler""""""""""""""""""""""""""""""""""""""""""""""
+set ruler
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Color Scheme"""""""""""""""""""""""""""""""""""""""
+colorscheme slate
+"set background=dark
+"colorscheme solarized 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""Mapping to switch panels"""""""""""""""""""""""""""
+nmap <silent> <C-Up> :wincmd k<CR>
+nmap <silent> <C-Down> :wincmd j<CR>
+nmap <silent> <C-Left> :wincmd h<CR>
+nmap <silent> <C-Right> :wincmd l<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""Set relative number and Tab""""""""""""""""""""""""
+set rnu
+"inoremap <Tab> <C-X><C-F>
+inoremap <Tab> <C-X><C-N>
+" under insert-mode type <C-V><Tab> when you need to input the real tab
+" inoremap <C-Tab> <C-V><Tab>
+
+" https://maku77.github.io/vim/advanced/folding.html
+" https://vim.fandom.com/wiki/Folding
+"set foldmethod=syntax
+"inoremap <F4> <C-O>za
+"nnoremap <F4> za
+"onoremap <F4> <C-C>za
+"vnoremap <F4> zf
+
+"nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+"vnoremap <Space> zf
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""Higjlight search"""""""""""""""""""""""""""""""""""
+set hlsearch
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""For comment""""""""""""""""""""""""""""""""""""""""
+"source ~/.vim/vcomments.vim
+map <C-a> :call Comment()<CR>
+map <C-b> :call Uncomment()<CR>
+
+"Function
+function! Comment()
+  let ext = tolower(expand('%:e'))
+  if ext == 'php' || ext == 'rb' || ext == 'sh' || ext == 'py'
+    silent s/\S/\# &/
+"    silent s/^/\#/
+  elseif ext == 'js' || ext == 'java' || ext == 'c' || ext == 'cpp' || ext == 'go'
+    silent s/\S/\/\/ &/
+"    silent s:^:\/\/:g
+  elseif ext == 'vim'
+    silent s:^:\":g
+  endif
+endfunction
+
+function! Uncomment()
+  let ext = tolower(expand('%:e'))
+  if ext == 'php' || ext == 'rb' || ext == 'sh' || ext == 'py'
+    silent s/\# //1
+"    silent s/^\#//
+  elseif ext == 'js' || ext == 'java' || ext == 'c' || ext == 'cpp' || ext == 'go'
+    silent s/\/\/ //1
+"    silent s:^\/\/::g
+  elseif ext == 'vim'
+    silent s:^\"::g
+  endif
+endfunction
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""For better diff color""""""""""""""""""""""""""""""
+if &diff
+    syntax off
+    colorscheme apprentice
+endif
+" https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff/2019438
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set mouse-=a
+
+
+
