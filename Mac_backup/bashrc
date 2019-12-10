@@ -38,4 +38,9 @@ alias mysqladmin=/usr/local/mysql/bin/mysqladmin
 PATH="/usr/local/mysql/bin/:${PATH}"
 export PATH
 
-set -o vi
+shopt -s extglob
+
+export GOPATH=$HOME/go
+export GOROOT=$HOME/go/src
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
