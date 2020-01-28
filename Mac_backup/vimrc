@@ -73,8 +73,8 @@ set ruler
 
 """"""""""""Color Scheme"""""""""""""""""""""""""""""""""""""""
 "colorscheme slate
-set background=dark
-colorscheme solarized 
+"set background=dark
+"colorscheme solarized 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
@@ -163,7 +163,7 @@ endif
 " https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff/2019438
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set mouse-=a
+set mouse+=a
 
 
 """"""""""""For go setting"""""""""""""""""""""""""""""""""""""
@@ -175,4 +175,11 @@ let g:go_fmt_autosave = 1
 " https://thoughtbot.com/blog/writing-go-in-vim
 " % means current file
 nmap <C-G> :GoRun %<CR>
+nmap <C-H> :GoRun  <CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""For python setting"""""""""""""""""""""""""""""""""""""
+nmap <C-P> :!python3 %<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+hi MatchParen cterm=bold ctermbg=cyan ctermfg=white
