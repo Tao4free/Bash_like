@@ -14,7 +14,7 @@
 # Install ctags
 case "$OSTYPE" in
   linux*)   echo "Linux / WSL" ;;
-  darwin*)  brew install ctags-exuberant go ;; #echo "Mac OS" ;; 
+  darwin*)  brew install ctags-exuberant go cmake;; #echo "Mac OS" ;; 
   win*)     echo "Windows" ;;
   msys*)    echo "MSYS / MinGW / Git Bash" ;;
   cygwin*)  echo "Cygwin" ;;
@@ -61,3 +61,5 @@ else
 fi
 echo | echo | vim +PluginInstall +qall &>/dev/null
 echo | echo | vim +GoInstallBinaries +qall &>/dev/null
+
+python3 ~/.vim/bundle/YouCompleteMe/install.py --clangd-completer
