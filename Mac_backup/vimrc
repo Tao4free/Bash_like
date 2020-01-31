@@ -16,6 +16,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'fatih/vim-go'
+Plugin 'valloric/youcompleteme'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -163,7 +164,7 @@ endif
 " https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff/2019438
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set mouse+=a
+set mouse-=a
 
 
 """"""""""""For go setting"""""""""""""""""""""""""""""""""""""
@@ -183,3 +184,12 @@ nmap <C-P> :!python3 %<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 hi MatchParen cterm=bold ctermbg=cyan ctermfg=white
+
+
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_min_num_of_chars_for_completion = 99
+let g:ycm_max_num_candidates = 5
+let g:ycm_max_num_identifier_candidates = 5
+let g:ycm_key_list_select_completion = ['<Enter>', '<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<bar>', '<C-k>', '<Up>']
