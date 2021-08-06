@@ -11,12 +11,20 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'altercation/vim-colors-solarized'  " https://vimawesome.com/plugin/vim-colors-solarized-ours
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdtree'
+"Plugin 'altercation/vim-colors-solarized'  " https://vimawesome.com/plugin/vim-colors-solarized-ours
+if !(&diff)
+    Plugin 'majutsushi/tagbar'
+    Plugin 'scrooloose/nerdtree'
+endif
 Plugin 'tpope/vim-surround'
-Plugin 'fatih/vim-go'
 Plugin 'valloric/youcompleteme'
+Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'akhaku/vim-java-unused-imports'
+Plugin 'mattn/vim-sqlfmt'
+
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -68,55 +76,60 @@ set backspace=indent,eol,start
 
 
 """"""""""""Ruler""""""""""""""""""""""""""""""""""""""""""""""
-set ruler
+"set ruler
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """"""""""""Color Scheme"""""""""""""""""""""""""""""""""""""""
 "colorscheme slate
-"set background=dark
-"colorscheme solarized 
+"set background=light
+"colorscheme solarized
+colorscheme plastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """"""""""""NERDTree and TagBar Setting""""""""""""""""""""""""
-"brew install ctags-exuberant
+if !(&diff) 
+    "brew install ctags-exuberant
 
-"default disable
-"let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
-"let g:TypesFileIncludeLocals = 1
-"let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
+    "default disable
+    "let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+    "let g:TypesFileIncludeLocals = 1
+    "let g:DoxygenToolkit_authorName="tao4free@outlook.jp"
 
-"default disable
-"let g:tagbar_width = 20
-"let g:NERDTreeWinSize=20
-"let g:tagbar_left = 1
+    "default disable
+    "let g:tagbar_width = 20
+    "let g:NERDTreeWinSize=20
+    "let g:tagbar_left = 1
 
-"在左边占多宽
-let NERDTreeWinSize=28
-"当前目录的设定
-let NERDTreeChDirMode = 2
-"自动退出
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
-"打开vim时自动打开
-autocmd vimenter * NERDTree
-"<F2>作为toggle
-nmap <F2> :NERDTreeToggle<CR>
+    "在左边占多宽
+    let NERDTreeWinSize=28
+    "当前目录的设定
+    let NERDTreeChDirMode = 2
+    "自动退出
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&b:NERDTreeType == "primary") | q | endif
+    "打开vim时自动打开
+    autocmd vimenter * NERDTree
+    "<F2>作为toggle
+    nmap <F2> :NERDTreeToggle<CR>
 
 
-"在这儿设定二者的分布
-let g:tagbar_vertical = 12
-"去除第一行的帮助信息
-let g:tagbar_compact = 1
-"当编辑代码时，在Tagbar自动追踪变量
-let g:tagbar_autoshowtag = 1
-"<F3>作为toggle
-nmap <F3> :TagbarToggle<CR>
-"打开vim时自动打开
-autocmd VimEnter * nested :TagbarOpen
-wincmd l
-"如果不加这句，打开vim的时候当前光标会在Nerdtree区域
-autocmd VimEnter * wincmd l
+    "在这儿设定二者的分布
+    let g:tagbar_vertical = 20
+    "去除第一行的帮助信息
+    let g:tagbar_compact = 1
+    "当编辑代码时，在Tagbar自动追踪变量
+    let g:tagbar_autoshowtag = 1
+    "<F3>作为toggle
+    nmap <F3> :TagbarToggle<CR>
+    "打开vim时自动打开
+    autocmd VimEnter * nested :TagbarOpen
+    wincmd l
+    "如果不加这句，打开vim的时候当前光标会在Nerdtree区域
+    autocmd VimEnter * wincmd l
+
+    let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""Mapping to switch panels"""""""""""""""""""""""""""
@@ -128,6 +141,7 @@ nmap <silent> <C-Right> :wincmd l<CR>
 
 """"""""""""Set relative number and Tab""""""""""""""""""""""""
 set rnu
+set nu
 "inoremap <Tab> <C-X><C-F>
 inoremap <Tab> <C-X><C-N>
 " under insert-mode type <C-V><Tab> when you need to input the real tab
@@ -159,7 +173,7 @@ map <C-b> :call Uncomment()<CR>
 """"""""""""For better diff color""""""""""""""""""""""""""""""
 if &diff
     syntax off
-    colorscheme apprentice
+    "colorscheme happy_hacking
 endif
 " https://stackoverflow.com/questions/2019281/load-different-colorscheme-when-using-vimdiff/2019438
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -176,20 +190,127 @@ let g:go_fmt_autosave = 1
 " https://thoughtbot.com/blog/writing-go-in-vim
 " % means current file
 nmap <C-G> :GoRun %<CR>
-nmap <C-H> :GoRun  <CR>
+"nmap <C-H> :GoRun  <CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""For python setting"""""""""""""""""""""""""""""""""""""
 nmap <C-P> :!python3 %<CR>
+"au BufNewFile,BufRead *.py
+"            \ set tabstop=4
+"            \ softtabstop=4
+"            \ shiftwidth=4
+"            \ textwidth=99
+"            \ expandtab
+"            \ autoindent
+"            \ fileformat=unix
+"UTF-8 Support
+set encoding=utf-8
+let g:python_pep8_indent_hang_closing = 1
+"Syntax Checking/Highlighting
+"let python_highlight_all=1
+"au BufWrite * :Autoformat
+" https://realpython.com/vim-and-python-a-match-made-in-heaven/#ditch-the-mouse
+"
+"----------------------------------------------------------
+" syntastic
+"----------------------------------------------------------
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height = 8
+"----------------------------------------------------------
+" flake8
+"----------------------------------------------------------
+let g:syntastic_python_checkers = ["flake8"]
+" https://qiita.com/mykysyk@github/items/7d8c61fb4e6af2c0eef6
+
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+let g:syntastic_quiet_messages = { 'regex': 'line too long' }
+nnoremap <C-s> :SyntasticCheck<CR>
+nnoremap <C-x><C-s> :SyntasticReset<CR>
+nnoremap <C-l> :lnext<CR>
+nnoremap <C-h> :lprevious<CR>
+autocmd BufWritePost * SyntasticCheck
+"----------------------------------------------------------
+" comment for python
+"----------------------------------------------------------
+function! InsertPythonAnnotation()
+    let l:text = [
+        \ '"""',
+        \ "Type<maohao>",
+        \ "<kongzhe>",
+        \ "Desc<maohao>",
+        \ "<kongzhe>",
+        \ '"""',
+    \ ]
+    "let text = "\"\"\"\nType:\nDesc"
+    execute "normal! o" . join(l:text, "\r") . "\<Esc>"
+    %s/<maohao>/\:/g
+    %s/<kongzhe>/    None/g
+endfunction
+autocmd FileType python nnoremap <C-c> :call InsertPythonAnnotation()<CR>
+
+" How can you automatically remove trailing whitespace in vim
+autocmd BufWritePre *.py :%s/\s\+$//e
+nohl
+" https://stackoverflow.com/questions/356126/how-can-you-automatically-remove-trailing-whitespace-in-vim
+"
+let g:python_highlight_operators = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 hi MatchParen cterm=bold ctermbg=cyan ctermfg=white
 
-
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_min_num_of_chars_for_completion = 99
-let g:ycm_max_num_candidates = 5
-let g:ycm_max_num_identifier_candidates = 5
+let g:ycm_max_num_candidates = 8
+let g:ycm_max_num_identifier_candidates = 8
 let g:ycm_key_list_select_completion = ['<Enter>', '<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<bar>', '<C-k>', '<Up>']
+let g:ycm_disable_for_files_larger_than_kb = 500
+let g:ycm_filetype_blacklist={'csv': 1}
+
+
+""""""""""""status bar"""""""""""""""""""""""""""""""""""""
+let g:airline_extensions = ['tabline']
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_statusline_ontop=1
+let g:airline#extensions#branch#enabled=1
+let g:csv_nomap_up=1
+let g:csv_nomap_down=1
+
+
+
+""""""""""""shortcut for copy""""""""""""""""""""""""""""""
+" vnoremap <D--C> "*y
+" nnoremap <C-r> "*y<CR>
+noremap <Leader>o "+y
+
+
+
+""""""""""""organize swap file"""""""""""""""""""""""""""""""""""""
+set undofile
+set undolevels=1000         " How many undos
+set undoreload=10000        " number of lines to save for undo
+
+set backup                        " enable backups
+set swapfile                      " enable swaps
+set undodir=$HOME/.vim/tmp/undo     " undo files
+set backupdir=$HOME/.vim/tmp/backup " backups
+set directory=$HOME/.vim/tmp/swap   " swap files
+
+" Make those folders automatically if they don't already exist.
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), "p")
+endif
